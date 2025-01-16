@@ -1,0 +1,1 @@
+SELECT CaseNumber ,Contact.FirstName , Contact.LastName , Account.Name FROM Case 
