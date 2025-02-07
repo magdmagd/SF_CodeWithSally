@@ -1,7 +1,8 @@
-public class SOSLQuery{
+public class SOSLQuery
+{
     public List<Account> getAccounts(String searchString) {
 
-        searchString = '{Forbes}' ;
+        searchString = 'Forbes' ;
         // Define the SOSL query
         String searchQuery = 'FIND \'' + String.escapeSingleQuotes(searchString) + '\' IN ALL FIELDS RETURNING Account(Id, Name)';
         
@@ -13,4 +14,4 @@ public class SOSLQuery{
         
         return accounts;
     }//end class 
-}
+}//end SOSLQuery

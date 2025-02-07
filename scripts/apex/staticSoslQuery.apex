@@ -3,14 +3,14 @@ public class SimpleSOSLQuery
  
     public List<sObject> getAccountsAndContacts(String searchTerm) 
     {
-        searchTerm = 'Forbes';
+        //searchTerm = 'sForce';
         // Add wildcard characters for partial matching
-        String searchExpression = '%' + String.escapeSingleQuotes(searchTerm) + '%';
+       // String searchExpression = '%' + String.escapeSingleQuotes(searchTerm) + '%';
 
         // Perform the SOSL query
         List<List<sObject>> searchResults =
          [
-            FIND :searchExpression
+            FIND 'sForce*'
             IN ALL FIELDS
             RETURNING
                 Account (Id, Name),
