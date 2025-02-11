@@ -25,21 +25,35 @@ trigger AccountTrigger on Account (before insert, before update, after insert, a
                     {
                         acc.addError('You cannot delete an account with Industry = Technology.');
                     }
-                
-            }//end for
-           
+           }//end for           
         }//end else if
     }//end if 
  else if (Trigger.isAfter)
     {
         if (Trigger.isInsert) 
         {
-           // AccountTriggerHandler.handleAfterInsert(Trigger.new);
+         List<Task> lstTasks = new List<Task>();
+         for (Account acc: Trigger.new)
+         {
+            Task welcomeTask = new Task(
+               OwnerId = acc.OwnerId,
+                WhatId = acc.Id,
+                Subject = 'Welcome To SF',
+                Priority = 'Normal',
+                IsReminderSet = true,
+                ReminderDateTime = System.now()+1 ,
+                Status = 'Not Started');
+                lstTasks.add(welcomeTask);
+         }//end for 
+         insert lstTasks;
         }//end if insert 
         else if (Trigger.isUpdate)
        {
             //AccountTriggerHandler.handleAfterUpdate(Trigger.new, Trigger.oldMap);
        }//end if update 
        else if(Trigger.isUnDelete)
+       { 
+         //Account TriggerHandler.handleUnDelete(Trigger.new,Trigger.oldMap);
+      }
     }//end After 
 }//end triiger 
