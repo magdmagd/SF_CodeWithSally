@@ -52,8 +52,6 @@ trigger AccountTrigger on Account (before insert, before update, after insert, a
             //AccountTriggerHandler.handleAfterUpdate(Trigger.new, Trigger.oldMap);
        }//end if update 
        else if(Trigger.isUnDelete)
-       { 
-         //Account TriggerHandler.handleUnDelete(Trigger.new,Trigger.oldMap);
-      }
+       {  }
     }//end After 
 }//end triiger 
