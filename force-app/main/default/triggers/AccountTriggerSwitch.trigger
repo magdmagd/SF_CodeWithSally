@@ -60,15 +60,34 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
 
         when after_update
         {
+            List<Task> lstTasks = new List<Task>();
+            for(Account acc : Trigger.new)
+            {
+                Account oldAcc = Trigger.oldMap.get(acc.Id);
+                if(acc.annualRevenue != oldAcc.AnnualRevenue && acc.AnnualRevenue > 10000 && oldAcc.AnnualRevenue < 10000)
+                {
+                    Task reviewTask = new Task(
+                        Subject = 'Review High Value ',
+                        WhatId = acc.Id,
+                        OwnerId = acc.OwnerId,
+                        Status = 'Not Started',
+                        Priority = 'High',
+                        Description = 'Annual Revenue exceeded $10,000,000. Review account details.'
+                    );
+                    lstTasks.add(reviewTask);                    
 
-        }
+                }//end if 
+           } //end for 
+           insert lstTasks;
+        }//end after_update  
+        
         when after_undelete
         {
 
-        }
+        }//end  after_undelete
         when else
         {
 
-        }
+        }//end else 
     } //end switch 
 }//end AccountTriggerSwitch
