@@ -33,8 +33,26 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
 
          when Before_delete 
          {
-            //AccountTriggerHandler.handlebeforeDelete(Trigger.old, Trigger.oldMap);
-         }
+            List<Account> lstAccounts=[Select id,(Select Id from Opportunities) From Account where ID in : Trigger.oldMap.keyset()];
+           // Map<id,Integer> mapAccountOpps = new Map<Id,Integer>();
+
+          
+            for(Account accountObj : lstAccounts)
+            {
+                if((accountObj.Opportunities.isEmpty()?0:accountObj.Opportunities.size()) >0)
+                accountObj.addError('You cannot delete this Account because it has associated Opportunities.');
+               // mapAccountOpps.put(accountObj.id,numberOpps);
+            }
+
+           /* for (Account acc : Trigger.old)
+             {
+                if(mapAccountOpps.containsKey(acc.Id) && mapAccountOpps.get(acc.Id)>0)
+                {
+                    acc.addError('You cannot delete this Account because it has associated Opportunities.');
+                }
+             }*/
+
+         }//end Before_delete 
 
          
         when AFTER_INSERT 
@@ -83,11 +101,22 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
         
         when after_undelete
         {
+         List<Task> lstTasks = new List<Task>();
+         for (Account acc: Trigger.new)
+         {
+            Task reviewTask = new Task(
+               OwnerId = acc.OwnerId,
+                WhatId = acc.Id,
+                Subject = 'Review undeleted Account',
+                 Description = 'The Account has been restored. Please review the details.',
+                Priority = 'High',
+                Status = 'Not Started');
+                lstTasks.add(reviewTask);
+         }//end for 
+
+         insert lstTasks;
 
         }//end  after_undelete
-        when else
-        {
-
-        }//end else 
+       
     } //end switch 
 }//end AccountTriggerSwitch
