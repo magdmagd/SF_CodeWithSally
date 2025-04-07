@@ -1,6 +1,5 @@
 trigger AccountTriggerSwitch on Account (before insert , before update , after insert , after update , before delete , after undelete)
 {
-
     switch on Trigger.OperationType 
     {
         when BEFORE_INSERT 
@@ -13,7 +12,7 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
                 }
                 else if(string.isblank(acc.Industry))
                 {
-                    acc.Industry = 'Technology';
+                    acc.Industry = 'Technology';                   
                 }
             }//end for))
         }// end before insert
@@ -33,39 +32,20 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
 
          when Before_delete 
          {
-            /*List<Account> lstAccounts=[Select id,(Select Id from Opportunities) From Account where ID in : Trigger.oldMap.keyset()];
-           // Map<id,Integer> mapAccountOpps = new Map<Id,Integer>();
-
-          
-            for(Account accountObj : lstAccounts)
-            {
-                //if((accountObj.Opportunities.isEmpty()?0:accountObj.Opportunities.size()) >0)
-                if(!accountObj.Opportunities.isEmpty())
-                accountObj.addError('You cannot delete this Account because it has associated Opportunities.');
-               // mapAccountOpps.put(accountObj.id,numberOpps);
-            }
-
-            for (Account acc : Trigger.old)
-             {
-                if(mapAccountOpps.containsKey(acc.Id) && mapAccountOpps.get(acc.Id)>0)
-                {
-                    acc.addError('You cannot delete this Account because it has associated Opportunities.');
-                }
-             }*/
+            
 
              List<Account> lstAccounts=[Select id,(Select Id from Opportunities) From Account where ID in : Trigger.oldMap.keyset()];
-            for(Account accountObj : lstAccounts)
-            { 
+             for(Account accountObj : lstAccounts)
+                { 
                 if(!accountObj.Opportunities.isEmpty())
                 accountObj.addError('You cannot delete this Account because it has associated Opportunities.');
-            }//end for
+                 }//end for
 
          }//end Before_delete 
 
         
          
-            
-      
+                
 
          
         when AFTER_INSERT 
