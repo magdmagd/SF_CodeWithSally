@@ -1,4 +1,4 @@
-trigger AccountTrigger on Account (before insert, before update, after insert, after update , before delete , after undelete) 
+trigger AccountTriggerV1 on Account (before insert, before update, after insert, after update , before delete , after undelete) 
 {
     if (Trigger.isBefore) 
     {

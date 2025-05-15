@@ -1,4 +1,4 @@
-trigger AccountTriggerSwitch on Account (before insert , before update , after insert , after update , before delete , after undelete)
+trigger AccountTriggerV2 on Account (before insert , before update , before delete ,after insert , after update  , after undelete)
 {
     switch on Trigger.OperationType 
     {
@@ -32,28 +32,24 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
 
          when Before_delete 
          {
-            
-
-             List<Account> lstAccounts=[Select id,(Select Id from Opportunities) From Account where ID in : Trigger.oldMap.keyset()];
+            List<Account> lstAccounts=[Select id,(Select Id from Opportunities) From Account where ID in : Trigger.oldMap.keyset()];
              for(Account accountObj : lstAccounts)
                 { 
                 if(!accountObj.Opportunities.isEmpty())
                 accountObj.addError('You cannot delete this Account because it has associated Opportunities.');
                  }//end for
-
          }//end Before_delete 
 
-        
-         
                 
-
+                
          
         when AFTER_INSERT 
-        { 
-
-        List<Task> lstTasks = new List<Task>();
+        {      
+     if(PermissionUtils.hasCreateAccess('Task')) 
+     {
+       List<Task> lstTasks = new List<Task>();
          for (Account acc: Trigger.new)
-         {
+          {
             Task welcomeTask = new Task(
                OwnerId = acc.OwnerId,
                 WhatId = acc.Id,
@@ -63,11 +59,14 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
                 ReminderDateTime = System.now()+1 ,
                 Status = 'Not Started');
                 lstTasks.add(welcomeTask);
-         }//end for 
-
-         insert lstTasks;
-
-        }//  when AFTER_INSERT 
+           }//end for        
+  } 
+  else 
+     {
+      System.debug('User does not have create access for Task.');
+     }
+    
+    }//  when AFTER_INSERT 
 
         when after_update
         {
@@ -101,7 +100,7 @@ trigger AccountTriggerSwitch on Account (before insert , before update , after i
                OwnerId = acc.OwnerId,
                 WhatId = acc.Id,
                 Subject = 'Review undeleted Account',
-                 Description = 'The Account has been restored. Please review the details.',
+                Description = 'The Account has been restored. Please review the details.',
                 Priority = 'High',
                 Status = 'Not Started');
                 lstTasks.add(reviewTask);
