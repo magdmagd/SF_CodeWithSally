@@ -43,11 +43,11 @@ trigger AccountTriggerV2 on Account (before insert , before update , before dele
                 
                 
          
-        when AFTER_INSERT 
-        {      
-     if(PermissionUtils.hasCreateAccess('Task')) 
-     {
-       List<Task> lstTasks = new List<Task>();
+when AFTER_INSERT 
+      {      
+       if(PermissionUtils.hasCreateAccess('Task')) 
+        {
+        List<Task> lstTasks = new List<Task>();
          for (Account acc: Trigger.new)
           {
             Task welcomeTask = new Task(
@@ -59,14 +59,15 @@ trigger AccountTriggerV2 on Account (before insert , before update , before dele
                 ReminderDateTime = System.now()+1 ,
                 Status = 'Not Started');
                 lstTasks.add(welcomeTask);
-           }//end for        
-  } 
+           }//end for  
+     insert lstTasks;      
+    } 
   else 
      {
       System.debug('User does not have create access for Task.');
-     }
+     }//end else
     
-    }//  when AFTER_INSERT 
+}//when AFTER_INSERT 
 
         when after_update
         {
