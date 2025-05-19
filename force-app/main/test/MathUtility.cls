@@ -3,31 +3,37 @@ public class MathUtility
 
     public static Integer addNumbers(List<Integer> lstNumbers)
     {
-        Integer res = 0 ;
+        Integer sum = 0 ;
+        for(Integer numbervalue:lstNumbers)
+        {
+            sum+=numbervalue ;
+        }//end for 
 
-        return res ;
+        System.System.debug('sum value :'+sum);
+
+        return sum ;
     }//end addNumbers
 
-    public static Integer addNumbers(Integer Num1 , Integer Num2)
+    public static Integer addNumbers(Integer num1 , Integer num2)
     {
-        Integer res = 0 ;
-
-        return res ;
+        return addNumbers(new List<Integer>{num1,Num2});
     }//end addNumbers
 
 
     public static decimal divideNumbers(decimal num1 , decimal num2)
     {
-        decimal res = 0 ;
+        if(num2==0)
+          {
+            throw new IllegalArgumentException('Cannot divide by zero');
+          }
+        
+        return num1/num2 ;
+    }//end divideNumbers
 
-        return res ;
-    }
-
-    public static Integer subtractNumbers(Integer Num1 , Integer Num2)
+    public static Integer subtractNumbers(Integer num1 , Integer num2)
     {
-        Integer res = 0 ;
-
-        return res ;
+       
+        return num1-num2;
 
     }
 }//end class 
