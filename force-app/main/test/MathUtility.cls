@@ -32,8 +32,11 @@ public class MathUtility
 
     public static Integer subtractNumbers(Integer num1 , Integer num2)
     {
-       
-        return num1-num2;
+               return num1-num2;
+    }//end subtractNumbers
 
-    }
+    public static Integer multiplyNumbers(Integer num1 , Integer num2)
+    {
+        return num1*num2 ;
+    }//end multiplyNumbers
 }//end class 
