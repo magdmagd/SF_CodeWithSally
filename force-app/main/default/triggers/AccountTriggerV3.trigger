@@ -21,7 +21,7 @@ trigger AccountTriggerV3 on Account(before insert , before update , before delet
 
      when AFTER_INSERT
      {
-
+      AccountTriggerHandler.handleAfterInsert(Trigger.new);
      }
      when AFTER_UPDATE
      {
