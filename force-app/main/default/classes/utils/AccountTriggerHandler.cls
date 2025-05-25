@@ -68,7 +68,9 @@ public class AccountTriggerHandler
      private static Task createTask(Account acc , String state)
      {
         Task reviewTask;
-        if(state == 'undelete')
+        switch on state{
+          when 'undelete'
+        //if(state == 'undelete')
          {
              reviewTask = new Task(
                OwnerId = acc.OwnerId,
@@ -78,7 +80,8 @@ public class AccountTriggerHandler
                 Priority = 'High',
                 Status = 'Not Started');
           }//end       
-         else if(state == 'insert')
+        // else if(state == 'insert')
+         when 'insert'
          {
          reviewTask = new Task(	
                     Subject = 'Welcome to Salesforce!',
@@ -88,6 +91,17 @@ public class AccountTriggerHandler
                     Status = 'Not Started',
                     Priority = 'Normal');            
          }//end if 
+         when 'update'
+         {
+             reviewTask = new Task(
+               OwnerId = acc.OwnerId,
+                WhatId = acc.Id,
+                Subject = 'Review Account High Vale',
+                Description = 'Annual Revenue exceeded Amount , Review account details',
+                Priority = 'High',
+                Status = 'Not Started');
+         }//end 'update'
+        }//end switch 
          return reviewTask ;       
      }//end createTask(Account acc)
 
